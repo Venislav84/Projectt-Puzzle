@@ -41,3 +41,4 @@ private:
 	std::map<std::string, SDL_Texture*> textureMap; //map to store the loaded textures with loadTexture
 	std::map<std::string, bool> display; //map to store instruction for displaying the loaded textures
 };
+

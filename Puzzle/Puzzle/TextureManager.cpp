@@ -40,7 +40,10 @@ void TextureManager::removeTexture(std::string id) {
 void TextureManager::setSelectedMainPicturesFirst(std::string id) {
     SDL_Texture* tex = textureMap[id];
     textureMap.clear();
-    textureMap["00"] = tex;
+   // textureMap["left_selected_00"] = tex;
+    textureMap["right_selected_00"] = tex;
+    //display["left_selected_00"] = 0;
+    display["right_selected_00"] = 1;
 }
 
 bool TextureManager::hideShowTexture(std::string id, bool hideShow) {
@@ -67,18 +70,15 @@ void TextureManager::drawTexture(std::string id, int x, int y,
     int width, int height,
     SDL_Renderer* ren,
     SDL_RendererFlip flip, int rotation) {
-    if (display[id]) { //check if texture is hidden
-        SDL_Rect srcRect;
-        SDL_Rect destRect;
-        srcRect.x = srcRect.y = 0;
-        srcRect.w = destRect.w = width;
-        srcRect.h = destRect.h = height;
-        destRect.x = x;
-        destRect.y = y;
+    SDL_Rect srcRect;
+    SDL_Rect destRect;
+    srcRect.x = srcRect.y = 0;
+    srcRect.w = destRect.w = width;
+    srcRect.h = destRect.h = height;
+    destRect.x = x;
+    destRect.y = y;
 
-        SDL_RenderCopyEx(ren, textureMap[id], &srcRect, &destRect, rotation, 0, flip); //paint on renderer
-    }
-    else { return; }
+    SDL_RenderCopyEx(ren, textureMap[id], &srcRect, &destRect, rotation, 0, flip); //paint on renderer
 }
 /*
 Splits texture in equal sized rectangles(frames)

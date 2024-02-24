@@ -7,6 +7,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 		std::cout << "SDL running\n";
 		isMainPageShowing = true;
+		isPuzzlePageShowing = false;
+		currentSelectedRightPuzzleBox;
+		currentSelectedRightPuzzleBox.isSelected = false;
 		xMatrixRandom = 3;
 		yMatrixRandom = 2;
 
@@ -18,9 +21,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 			if (renderer != 0) //renderer init success
 			{
 				std::cout << "Renderer created\n";
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+				SDL_SetRenderDrawColor(renderer, 230, 10, 60, 255);
 				loadMainPictures(xMatrixRandom, yMatrixRandom);
-				drawDynamicSquares(xMatrixRandom, yMatrixRandom, width, height, 0, 0);
+				drawDynamicSquares(xMatrixRandom, yMatrixRandom, width, height, 0, 0, "main_");
+				SDL_RenderPresent(renderer); //"present" the drawings from the buffer to the renderer
 			}
 			else {
 				std::cout << "renderer init failed\n";
@@ -42,26 +46,25 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
 }
 
 // enumerator to handle window rectangle for readability
-//enum Quadrant { TL = 0, TM = 1, TR = 2, BL = 3, BM = 4, BR = 5, UNDEFINED = 100 };
-//
-//Quadrant mouseDownIn = UNDEFINED; // indicates which quadrant the L or R mouse button was pressed down
-//Quadrant mouseDownOut = UNDEFINED; // indicates which quadrant the L mouse was released up
+enum Quadrant { TL = 0, TM = 1, TR = 2, BL = 3, BM = 4, BR = 5, UNDEFINED = 100 };
 
-//// Texture positions for the moustache texture
-//int texPosX, texPosY = 0;
-
-// texture dimensions;  down-scaling not implemented - must be the size of the image or higher
-//int w = 100; int h = 60;
+Quadrant mouseDownIn = UNDEFINED; // indicates which quadrant the L or R mouse button was pressed down
+Quadrant mouseDownOut = UNDEFINED; // indicates which quadrant the L mouse was released up
 
 void Game::drawBox(string key, float boxStartX, float boxStartY, float boxWidth, float boxHeight) {
-	TextureManager::Instance()->drawTexture(key, boxStartX, boxStartY, boxWidth, boxHeight, renderer); //renders only if visible
+	if (currentSelectedRightPuzzleBox.isSelected == true && currentSelectedRightPuzzleBox.x == boxStartX && currentSelectedRightPuzzleBox.y == boxStartY) {
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+	}
+	else {
+		SDL_SetRenderDrawColor(renderer, 230, 10, 60, 255);
+	}
 	SDL_RenderDrawLine(renderer, boxStartX, boxStartY, boxStartX + boxWidth, boxStartY); // top line
 	SDL_RenderDrawLine(renderer, boxStartX + boxWidth, boxStartY, boxStartX + boxWidth, boxStartY + boxHeight); // right line
 	SDL_RenderDrawLine(renderer, boxStartX + boxWidth, boxStartY + boxHeight, boxStartX, boxStartY + boxHeight); // bottom line
-	SDL_RenderDrawLine(renderer, boxStartX, boxStartY, boxStartX, boxStartY + boxHeight); // left line
+	SDL_RenderDrawLine(renderer, boxStartX, boxStartY, boxStartX, boxStartY + boxHeight); // left linecin
 }
 
-void Game::drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, float startX, float startY) {
+void Game::drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, float startX, float startY, string keyPrefix) {
 	float boxWidth = ww / xMatrix;
 	float boxHeight = wh / yMatrix;
 	float boxX = wh / yMatrix;
@@ -69,7 +72,7 @@ void Game::drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, floa
 	int counter = 0;
 	for (int i = 0; i < yMatrix; i++) {
 		for (int j = 0; j < xMatrix; j++) {
-			string key = to_string(i) + to_string(j);
+			string key = keyPrefix + to_string(i) + to_string(j);
 			if (j == 0 && i == 0) {
 				boxX = startX;
 				boxY = startY;
@@ -86,15 +89,41 @@ void Game::drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, floa
 				boxX = startX + ((ww / xMatrix) * j);
 				boxY = startY + ((wh / yMatrix) * i);
 			}
-			drawBox(key, boxX, boxY, boxWidth, boxHeight);
-			if (counter < xMatrix * yMatrix) {
-				positions[counter].x = boxX;
-				positions[counter].y = boxY;
-				positions[counter].w = boxWidth;
-				positions[counter].h = boxHeight;
-				positions[counter].key = key;
+
+			if (key.rfind("right_puzzle", 0) == 0) {
+				SDL_Rect rcTo = { boxX, boxY, boxWidth, boxHeight };
+				SDL_Rect rcFrom = { positionsLeftPuzzle[cells[i][j]].x, positionsLeftPuzzle[cells[i][j]].y, positionsLeftPuzzle[cells[i][j]].w, positionsLeftPuzzle[cells[i][j]].h };
+				SDL_RenderCopy(renderer, TextureManager::Instance()->getTexture("right_selected_00"), &rcFrom, &rcTo);
+				positionsRightPuzzle[counter].x = rcTo.x;
+				positionsRightPuzzle[counter].y = rcTo.y;
+				positionsRightPuzzle[counter].w = rcTo.w;
+				positionsRightPuzzle[counter].h = rcTo.h;
+				positionsRightPuzzle[counter].xSrc = rcFrom.x;
+				positionsRightPuzzle[counter].ySrc = rcFrom.y;
+				positionsRightPuzzle[counter].wSrc = rcFrom.w;
+				positionsRightPuzzle[counter].hSrc = rcFrom.h;
 				counter++;
 			}
+			else {
+				if (selectedLeftPuzzleBoxIsMatched && boxX == currentSelectedRightPuzzleBox.xSrc && boxY == currentSelectedRightPuzzleBox.ySrc) {
+					SDL_Rect rcTo = { currentSelectedRightPuzzleBox.xSrc, currentSelectedRightPuzzleBox.ySrc, currentSelectedRightPuzzleBox.wSrc, currentSelectedRightPuzzleBox.hSrc };
+					SDL_Rect rcFrom = { currentSelectedRightPuzzleBox.x, currentSelectedRightPuzzleBox.y, currentSelectedRightPuzzleBox.w, currentSelectedRightPuzzleBox.h };
+					SDL_RenderCopy(renderer, TextureManager::Instance()->getTexture("left_selected_00"), &rcFrom, &rcTo);
+				}
+				else {
+					TextureManager::Instance()->drawTexture(key, boxX, boxY, boxWidth, boxHeight, renderer); //renders only if visible
+				}
+				
+				if (counter < xMatrix * yMatrix) {
+					positionsLeftPuzzle[counter].x = boxX;
+					positionsLeftPuzzle[counter].y = boxY;
+					positionsLeftPuzzle[counter].w = boxWidth;
+					positionsLeftPuzzle[counter].h = boxHeight;
+					positionsLeftPuzzle[counter].key = key;
+					counter++;
+				}
+			}
+			drawBox(key, boxX, boxY, boxWidth, boxHeight);
 		}
 	}
 }
@@ -104,9 +133,9 @@ string Game::getSelectedBox(int mouseX, int mouseY) {
 	int boxesLength = xMatrixRandom * yMatrixRandom;
 
 	for (int i = 0; i < boxesLength; i++) {
-		if (mouseX >= positions[i].x && mouseX <= positions[i].x + positions[i].w) { // mouseX is between left x Position and the right x postion
-			if (mouseY >= positions[i].y && mouseY <= positions[i].y + positions[i].h) { // mouseY is between top y Position and the bottom y postion
-				return positions[i].key;
+		if (mouseX >= positionsLeftPuzzle[i].x && mouseX <= positionsLeftPuzzle[i].x + positionsLeftPuzzle[i].w) { // mouseX is between left x Position and the right x postion
+			if (mouseY >= positionsLeftPuzzle[i].y && mouseY <= positionsLeftPuzzle[i].y + positionsLeftPuzzle[i].h) { // mouseY is between top y Position and the bottom y postion
+				return positionsLeftPuzzle[i].key;
 			}
 		}
 	}
@@ -134,48 +163,7 @@ void Game::generateMatrix() {
 }
 
 void Game::render() {
-	SDL_SetRenderDrawColor(renderer, 172, 172, 172, 255); //set drawing color
-	SDL_RenderClear(renderer); // clears the previous content and paints fills the background with color
 
-	int ww, wh;
-	SDL_GetWindowSize(window, &ww, &wh); //get window's width and height	
-
-	SDL_SetRenderDrawColor(renderer, 230, 10, 60, 255);
-
-	if (isMainPageShowing == true) {
-		drawDynamicSquares(xMatrixRandom, yMatrixRandom, ww, wh, 0, 0);
-	}
-	else {
-		// 
-
-
-		float oneSqueareWidth = ww / (xMatrixRandom * 2);
-		float oneSqueareHeight = wh / yMatrixRandom;
-		float puzzleWidth = (oneSqueareWidth * xMatrixRandom) - oneSqueareWidth;
-		float puzzleHeight = (oneSqueareHeight * yMatrixRandom) - oneSqueareHeight;
-		float startX = oneSqueareWidth / 2;
-		float startY = oneSqueareHeight / 2;
-
-		drawDynamicSquares(1, 1, puzzleWidth, puzzleHeight, startX, startY);
-
-		startX = (oneSqueareWidth * xMatrixRandom) + (oneSqueareWidth / 2);
-		drawDynamicSquares(1, 1, puzzleWidth, puzzleHeight, startX, startY);
-
-		startX = oneSqueareWidth / 2;
-
-		// draw left side
-		drawDynamicSquares(xMatrixRandom, yMatrixRandom, puzzleWidth, puzzleHeight, startX, startY);
-
-		// draw right side
-		startX = (oneSqueareWidth * xMatrixRandom) + (oneSqueareWidth / 2);
-		drawDynamicSquares(xMatrixRandom, yMatrixRandom, puzzleWidth, puzzleHeight, startX, startY);
-
-		// draw a vertical blue line
-		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-		SDL_RenderDrawLine(renderer, ww / 2, 0, ww / 2, wh);
-	}
-
-	SDL_RenderPresent(renderer); //"present" the drawings from the buffer to the renderer
 }
 
 void Game::drawSelectedMainPicture(string key) {
@@ -197,10 +185,21 @@ void Game::hideShowMainPictures(bool showPictures, int xMatrix, int yMatrix, str
 
 	for (int i = 0; i < yMatrix; i++) {
 		for (int j = 0; j < xMatrix; j++) {
-			string key = to_string(i) + to_string(j);
+			string key = "main_" + to_string(i) + to_string(j);
 			if (key != selectedKey) {
 				TextureManager::Instance()->hideShowTexture(key, false);
 			}
+		}
+	}
+
+}
+
+void Game::removeMainPictures() {
+
+	for (int i = 0; i < yMatrixRandom; i++) {
+		for (int j = 0; j < xMatrixRandom; j++) {
+			string key = "main_" + to_string(i) + to_string(j);
+			TextureManager::Instance()->removeTexture(key);
 		}
 	}
 
@@ -214,7 +213,7 @@ void Game::loadMainPictures(int xMatrix, int yMatrix) {
 	for (int i = 0; i < yMatrix; i++) {
 		for (int j = 0; j < xMatrix; j++) {
 			if (counter < picturesLength) {
-				string key = to_string(i) + to_string(j);
+				string key = "main_" + to_string(i) + to_string(j);
 				string imageName = "assets/00" + to_string(counter++) + ".jpg";
 				TextureManager::Instance()->loadTexture(imageName.c_str(), key, renderer);
 			}
@@ -222,110 +221,183 @@ void Game::loadMainPictures(int xMatrix, int yMatrix) {
 	}
 }
 
+
+void Game::randomize() {
+	size_t i, j;
+	int num = 0;
+
+	for (i = 0; i < yMatrixRandom; ++i)
+		for (j = 0; j < xMatrixRandom; ++j)
+			cells[i][j] = -1;
+	do {
+		i = rnd() % yMatrixRandom;
+		j = rnd() % xMatrixRandom;
+		if (cells[i][j] == -1) {
+			cells[i][j] = num;
+			++num;
+		}
+	} while (num < yMatrixRandom * xMatrixRandom);
+}
+
 void Game::handleEvents() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event)) {
-		int mouseX, mouseY, ww, wh;
-		//int button;
-		SDL_GetWindowSize(window, &ww, &wh); //get window's width and height
 		switch (event.type) {
 		case SDL_QUIT: running = false; break; // on close window 
 
 		case SDL_MOUSEBUTTONDOWN: {
+			SDL_SetRenderDrawColor(renderer, 172, 172, 172, 255); //set drawing color
+			SDL_RenderClear(renderer); // clears the previous content and paints fills the background with color
+			int mouseX, mouseY;
+			SDL_GetMouseState(&mouseX, &mouseY);
 
 			if (isMainPageShowing == true) {
-				/*Get rectangle*/
-				SDL_GetMouseState(&mouseX, &mouseY);
+				string key = getSelectedBox(mouseX, mouseY);
+				drawSelectedMainPicture(key);
+				generateMatrix();
+				randomize();
+				generatePuzzle();
 
-				if (event.button.button == SDL_BUTTON_LEFT /*|| event.button.button == SDL_BUTTON_RIGHT*/ ) {
-
-
-					if (isMainPageShowing == true) {
-						string key = getSelectedBox(mouseX, mouseY);
-						drawSelectedMainPicture(key);
+			}
+			else if (isPuzzlePageShowing) {
+				selectedLeftPuzzleBoxIsMatched = false;
+				if (!currentSelectedRightPuzzleBox.isSelected) {
+					if (checkIfRightPuzzleBoxIsSelected()) {
+						// Efekt na migane
+					}
+					else {
+						clearSelectedBox();
 					}
 				}
+				else if(checkIfLeftPuzzleBoxIsSelectedAndCompare()){
+					// Efekt na na migane
 
- 
+					clearSelectedBox();
+				}
+				else {
+					//if (checkIfRightPuzzleBoxIsSelected()) {
+						// Efekt na migane
+					//}
+					//clearSelectedBox();
+				}
+				// 
+				generatePuzzle();
 
-				isMainPageShowing = false;
-				generateMatrix();
 			}
-			else {
-				TextureManager::Instance()->hideShowTexture("", false);
-			}
+
 		}; break;
-
-			//		
-
-			//	case SDL_MOUSEBUTTONUP: {
-			//		/*Get quadrant on mouse up - to ensure the mouse stayed in the same quadrant*/
-			//		SDL_GetMouseState(&mouseX, &mouseY);// get mouse position
-
-			//		if (event.button.button == SDL_BUTTON_LEFT) {
-			//			switch (((mouseX > ww / 3) + (mouseY > wh / 2) * 2)) {
-			//			case 0: {
-			//				mouseDownOut = TL;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("TL"); //toggle visibility
-			//				}
-			//			}; break;
-			//			case 1: {
-			//				mouseDownOut = TM;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("TM"); //toggle visibility
-			//				}
-			//			} break;
-			//			case 2: {
-			//				mouseDownOut = TR;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("TR"); //toggle visibility
-			//				}
-			//			} break;
-			//			case 3: {
-			//				mouseDownOut = BL;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("BL"); //toggle visibility
-			//				}
-			//			} break;
-			//			case 4: {
-			//				mouseDownOut = BM;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("BM"); //toggle visibility
-			//				}
-			//			} break;
-			//			case 5: {
-			//				mouseDownOut = BR;
-			//				if (mouseDownIn == mouseDownOut) {
-			//					TextureManager::Instance()->toggleVisibility("BR"); //toggle visibility
-			//				}
-			//			} break;
-			//			default: break;
-			//			}
-			//		}
-			//		//if (event.button.button == SDL_BUTTON_RIGHT) {
-			//		//	// update global variables using references
-			//		//	int& tPosX = texPosX; int& tPosY = texPosY;
-			//		//	tPosX = mouseX - w / 3;
-			//		//	tPosY = mouseY - h / 2;
-			//		//}
-			//	}; break;
-			//	//case SDL_KEYDOWN: {
-			//	//	// update global variables using references
-			//	//	int& tPosX = texPosX; int& tPosY = texPosY;
-			//	//	if (event.key.keysym.sym == SDLK_UP)
-			//	//		tPosY -= 5;
-			//	//	if (event.key.keysym.sym == SDLK_DOWN)
-			//	//		tPosY += 5;
-			//	//	if (event.key.keysym.sym == SDLK_LEFT)
-			//	//		tPosX -= 5;
-			//	//	if (event.key.keysym.sym == SDLK_RIGHT)
-			//	//		tPosX += 5;
-			//	//} break;
 		default: break;
 		}
 	}
 }
+
+bool Game::checkIfRightPuzzleBoxIsSelected() {
+	int mouseX, mouseY, ww, wh;
+	//int button;
+	SDL_GetWindowSize(window, &ww, &wh); //get window's width and height
+	SDL_GetMouseState(&mouseX, &mouseY);
+
+	int boxesLength = xMatrixRandom * yMatrixRandom;
+
+	for (int i = 0; i < boxesLength; i++) {
+		if (mouseX >= positionsRightPuzzle[i].x && mouseX <= positionsRightPuzzle[i].x + positionsRightPuzzle[i].w) { // mouseX is between left x Position and the right x postion
+			if (mouseY >= positionsRightPuzzle[i].y && mouseY <= positionsRightPuzzle[i].y + positionsRightPuzzle[i].h) { // mouseY is between top y Position and the bottom y postion
+				currentSelectedRightPuzzleBox.x = positionsRightPuzzle[i].x;
+				currentSelectedRightPuzzleBox.y = positionsRightPuzzle[i].y;
+				currentSelectedRightPuzzleBox.w = positionsRightPuzzle[i].w;
+				currentSelectedRightPuzzleBox.h = positionsRightPuzzle[i].h;
+				currentSelectedRightPuzzleBox.xSrc = positionsRightPuzzle[i].xSrc;
+				currentSelectedRightPuzzleBox.ySrc = positionsRightPuzzle[i].ySrc;
+				currentSelectedRightPuzzleBox.wSrc = positionsRightPuzzle[i].wSrc;
+				currentSelectedRightPuzzleBox.hSrc = positionsRightPuzzle[i].hSrc;
+				currentSelectedRightPuzzleBox.isSelected = true;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+bool Game::checkIfLeftPuzzleBoxIsSelectedAndCompare() {
+	int mouseX, mouseY, ww, wh;
+	//int button;
+	SDL_GetWindowSize(window, &ww, &wh); //get window's width and height
+	SDL_GetMouseState(&mouseX, &mouseY);
+
+	int boxesLength = xMatrixRandom * yMatrixRandom;
+
+	for (int i = 0; i < boxesLength; i++) {
+		if (mouseX >= positionsLeftPuzzle[i].x && mouseX <= positionsLeftPuzzle[i].x + positionsLeftPuzzle[i].w) { // mouseX is between left x Position and the right x postion
+			if (mouseY >= positionsLeftPuzzle[i].y && mouseY <= positionsLeftPuzzle[i].y + positionsLeftPuzzle[i].h) { // mouseY is between top y Position and the bottom y postion
+				if (positionsLeftPuzzle[i].x == currentSelectedRightPuzzleBox.x && positionsLeftPuzzle[i].y == currentSelectedRightPuzzleBox.y) {
+					// Kopirane
+					return true;
+				}
+				selectedLeftPuzzleBoxIsMatched = true;
+				
+				return false;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Game::clearSelectedBox() {
+	currentSelectedRightPuzzleBox.x = 0;
+	currentSelectedRightPuzzleBox.y = 0;
+	currentSelectedRightPuzzleBox.w = 0;
+	currentSelectedRightPuzzleBox.h = 0;
+	currentSelectedRightPuzzleBox.xSrc = 0;
+	currentSelectedRightPuzzleBox.ySrc = 0;
+	currentSelectedRightPuzzleBox.wSrc = 0;
+	currentSelectedRightPuzzleBox.hSrc = 0;
+	currentSelectedRightPuzzleBox.isSelected = false;
+}
+
+void Game::generatePuzzle() {
+	int mouseX, mouseY, ww, wh;
+	//int button;
+	SDL_GetWindowSize(window, &ww, &wh); //get window's width and height
+	SDL_GetMouseState(&mouseX, &mouseY);
+
+	isMainPageShowing = false;
+	isPuzzlePageShowing = true;
+
+	float oneSqueareWidth = ww / (xMatrixRandom * 2);
+	float oneSqueareHeight = wh / yMatrixRandom;
+	float puzzleWidth = (oneSqueareWidth * xMatrixRandom) - oneSqueareWidth;
+	float puzzleHeight = (oneSqueareHeight * yMatrixRandom) - oneSqueareHeight;
+	float startX = oneSqueareWidth / 2;
+	float startY = oneSqueareHeight / 2;
+	SDL_SetRenderDrawColor(renderer, 230, 10, 60, 255);
+
+	// drawDynamicSquares(1, 1, puzzleWidth, puzzleHeight, startX, startY, "left_selected_");
+
+	SDL_RenderPresent(renderer); //"present" the drawings from the buffer to the renderer
+
+	startX = (oneSqueareWidth * xMatrixRandom) + (oneSqueareWidth / 2);
+	drawDynamicSquares(1, 1, puzzleWidth, puzzleHeight, startX, startY, "right_selected_");
+
+	startX = oneSqueareWidth / 2;
+
+	// draw left side
+	drawDynamicSquares(xMatrixRandom, yMatrixRandom, puzzleWidth, puzzleHeight, startX, startY, "left_puzzle");
+
+	// draw right side
+	startX = (oneSqueareWidth * xMatrixRandom) + (oneSqueareWidth / 2);
+	drawDynamicSquares(xMatrixRandom, yMatrixRandom, puzzleWidth, puzzleHeight, startX, startY, "right_puzzle");
+
+	SDL_RenderPresent(renderer); //"present" the drawings from the buffer to the renderer
+
+	TextureManager::Instance()->toggleVisibility("left_selected_00");
+
+	// draw a vertical blue line
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
+	SDL_RenderDrawLine(renderer, ww / 2, 0, ww / 2, wh);
+	SDL_RenderPresent(renderer); //"present" the drawings from the buffer to the renderer
+}
+
 void Game::update() {
 	// std::cout << "Ticks" << SDL_GetTicks()<< "\n";
 	// std::cout << "Ticks / 100 " << int((SDL_GetTicks()/100)) << "\n";
