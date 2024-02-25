@@ -10,7 +10,6 @@
 class TextureManager {
 public:
 	bool loadTexture(const char* fileName, std::string id, SDL_Renderer* ren);
-	bool hideShowTexture(std::string id, bool hideShow);
 
 	void drawTexture(std::string id,
 		int x, int y,
@@ -21,7 +20,7 @@ public:
 
 	void drawOneFrameFromTexture(std::string id,
 		int x, int y,
-		int width, int height,
+		int picWidth, int picHeight, int width, int height,
 		int currentRow, int currentFrame,
 		SDL_Renderer* ren,
 		SDL_RendererFlip flip = SDL_FLIP_NONE);

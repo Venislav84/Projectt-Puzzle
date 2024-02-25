@@ -13,13 +13,15 @@ int main(int argc, char* argv[]) {
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH, WINDOW_HEIGHT,
         SDL_WINDOW_RESIZABLE);
-    cout << "----------------------------------------------------\n";
-    cout << "Click with Left Mouse Button to show/hide images\n";
  
+    cout << "----------------------------------------------------\n";
+    cout << "Click Left Mouse Button to chopse one image from main screen\n";
+    cout << "Click Left Mouse Button to select image in right box\n";
+    cout << "Click Left Mouse Button to push image in left box\n";
     cout << "----------------------------------------------------\n";
     while (game->isRunning()) { // cycle
         game->handleEvents(); // listen
-        game->update(); // update (Game members?)
+        game->update(); // update
         game->render(); // draw
     }
 

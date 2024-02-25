@@ -31,6 +31,12 @@ typedef struct SDL_FRectWithKeyAndSrc
     bool isSelected;
 } SDL_FRectWithKeyAndSrc;
 
+typedef struct SDL_FRectMatched
+{
+    SDL_FRect left;
+    SDL_FRect right;
+} SDL_FRectMatched;
+
 class Game {
 public:
     Game();
@@ -40,20 +46,26 @@ public:
     void update();
     void handleEvents();
     void clean();
-    void hideShowMainPictures(bool showPictures, int xMatrix, int yMatrix, string selectedKey);
     bool isRunning();
     void generateMatrix();
-    void drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, float startX, float startY, string keyPrefix);
+    void drawDynamicSquares(int xMatrix, int yMatrix, float ww, float wh, float picWidth, float picHeight, float startX, float startY, string keyPrefix, float oneBoxWidth);
+    void drawDynamicSquaresFillMatched(int xMatrix, int yMatrix, float ww, float wh, float picWidth, float picHeight, float startX, float startY, string keyPrefix, float oneBoxWidth);
     void loadMainPictures(int xMatrix, int yMatrix);
     void drawBox(string key, float boxStartX, float boxStartY, float boxWidth, float boxHeight);
     string getSelectedBox(int mouseX, int mouseY);
     void drawSelectedMainPicture(string key);
-    void removeMainPictures();
     void randomize();
     void generatePuzzle();
     bool checkIfRightPuzzleBoxIsSelected();
     bool checkIfLeftPuzzleBoxIsSelectedAndCompare();
     void clearSelectedBox();
+    SDL_Point getsize(SDL_Texture* texture);
+    bool checkBoxIsMatched(bool isLeftBox, float x, float y);
+    void addMatchedBox(SDL_FRect left, SDL_FRect right);
+    bool checkIfGameIsCompleted();
+    void drawInitScreen();
+    void showCongratulationScreen();
+    void clearData();
 
 private:
     SDL_Window* window = NULL;
@@ -71,6 +83,7 @@ private:
     SDL_FRectWithKey        positionsLeftPuzzle[60];
     SDL_FRectWithKeyAndSrc  positionsRightPuzzle[60];
     SDL_FRect       positionsSelectedPicture[60];
+    SDL_FRectMatched       matchedBoxes[30];
     std::random_device rnd;
     SDL_Surface* img = nullptr;
     SDL_Texture* tex = nullptr;

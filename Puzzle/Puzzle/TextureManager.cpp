@@ -40,23 +40,10 @@ void TextureManager::removeTexture(std::string id) {
 void TextureManager::setSelectedMainPicturesFirst(std::string id) {
     SDL_Texture* tex = textureMap[id];
     textureMap.clear();
-   // textureMap["left_selected_00"] = tex;
+    textureMap["left_selected_00"] = tex;
     textureMap["right_selected_00"] = tex;
-    //display["left_selected_00"] = 0;
-    display["right_selected_00"] = 1;
 }
 
-bool TextureManager::hideShowTexture(std::string id, bool hideShow) {
-    if (hideShow == true) {
-        display[id] = 1; //set display of the texture initially to visible
-    }
-    else {
-        display[id] = 0; //set display of the texture to hidden
-    }
-
-
-    return false;
-}
 /*
 Draws the texture in the renderer
 Uses all texture pixels but allows rescaling via width and height
@@ -91,16 +78,18 @@ flip - flags to orient the texture (SDL_FLIP_NONE, SDL_FLIP_VERTICAL, SDL_FLIP_H
 */
 void TextureManager::drawOneFrameFromTexture(std::string id,
     int x, int y,
-    int width, int height,
+    int picWidth, int picHeight, int width, int height,
     int currentRow, int currentFrame,
     SDL_Renderer* ren,
     SDL_RendererFlip flip) {
     SDL_Rect srcRect;
     SDL_Rect destRect;
-    srcRect.x = width * currentFrame;
-    srcRect.y = height * (currentRow - 1);
-    srcRect.w = destRect.w = width;
-    srcRect.h = destRect.h = height;
+    srcRect.x = picWidth * currentFrame;
+    srcRect.y = picHeight * (currentRow - 1);
+    srcRect.w = picWidth;
+    srcRect.h = picHeight;
+    destRect.w = width;
+    destRect.h = height;
     destRect.x = x;
     destRect.y = y;
 

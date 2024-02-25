@@ -1,0 +1,72 @@
+﻿  Game.cpp
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(54,55): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(54,51): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(60,10): warning C4101: 'wh': unreferenced local variable
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(60,6): warning C4101: 'ww': unreferenced local variable
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(105,137): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(105,109): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(105,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(105,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(106,160): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(106,120): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(106,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(106,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(107,161): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(107,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(107,93): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(107,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(108,138): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(108,98): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(108,70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(108,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(112,75): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(112,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(112,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(112,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(113,96): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(113,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(113,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(113,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(114,97): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(114,76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(114,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(114,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(115,74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(115,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(115,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(115,31): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,235): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,219): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,199): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,189): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,184): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(146,144): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,121): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,111): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,100): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,90): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,84): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(160,78): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(173,72): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(173,62): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(173,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(173,50): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,87): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,87): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,110): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,110): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,137): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,137): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,171): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(219,171): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(293,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(316,6): warning C4101: 'mouseX': unreferenced local variable
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(316,14): warning C4101: 'mouseY': unreferenced local variable
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(490,21): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(491,22): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(492,24): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\Puzzle\Game.cpp(493,25): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  main.cpp
+  TextureManager.cpp
+  Generating Code...
+  Puzzle.vcxproj -> C:\Users\Veni\Documents\ProjectsGit\Dev\Puzzle\x64\Debug\Puzzle.exe
